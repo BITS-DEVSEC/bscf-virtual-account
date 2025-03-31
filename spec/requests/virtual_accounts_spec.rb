@@ -28,7 +28,7 @@ RSpec.describe "VirtualAccounts", type: :request do
 
   let(:new_attributes) do
     {
-      status: %w[active inactive suspended].sample
+      status: "pending"
     }
   end
 

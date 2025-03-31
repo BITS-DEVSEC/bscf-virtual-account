@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :listings
+  resources :virtual_account_transactions
   resources :virtual_accounts
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -7,4 +9,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :virtual_accounts
+  resources :virtual_account_transactions
 end
