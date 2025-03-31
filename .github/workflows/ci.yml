@@ -29,6 +29,7 @@ jobs:
         env:
           POSTGRES_PASSWORD: password
           POSTGRES_USER: postgres
+          DISABLE_SPRING: true
         ports:
           - 5432:5432
         options: >-
