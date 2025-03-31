@@ -51,8 +51,6 @@ jobs:
         env:
           RAILS_ENV: test
           POSTGRES_HOST: localhost
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
           POSTGRES_PORT: 5432
         run: |
           bundle exec rails db:create
