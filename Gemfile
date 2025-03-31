@@ -60,4 +60,5 @@ group :development, :test do
    # Speed up test runs
   gem "spring"
   gem "spring-commands-rspec"
+  gem "active_model_serializers"
 end
