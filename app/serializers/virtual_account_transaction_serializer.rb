@@ -9,6 +9,6 @@ class VirtualAccountTransactionSerializer < ActiveModel::Serializer
              :created_at,
              :updated_at
 
-  belongs_to :from_account, class_name: 'Bscf::Core::VirtualAccount'
-  belongs_to :to_account, class_name: 'Bscf::Core::VirtualAccount'
+  belongs_to :from_account, class_name: "Bscf::Core::VirtualAccount"
+  belongs_to :to_account, class_name: "Bscf::Core::VirtualAccount"
 end

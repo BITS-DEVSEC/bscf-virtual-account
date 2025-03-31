@@ -57,7 +57,7 @@ group :development, :test do
   gem "rspec-retry"
 
 
-   # Speed up test runs
+  # Speed up test runs
   gem "spring"
   gem "spring-commands-rspec"
   gem "active_model_serializers"

@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe "VirtualAccountTransactions", type: :request do
-
   let(:valid_attributes) do
     {
       from_account_id: create(:virtual_account, status: :active, cbs_account_number: "test1", balance: 10000.00).id,
