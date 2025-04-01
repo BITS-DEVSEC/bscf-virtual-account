@@ -57,6 +57,7 @@ jobs:
           POSTGRES_PORT: 5432
         run: |
           bundle exec rails db:create
+          bundle exec rails db:environment:set
           bundle exec rails db:schema:load
 
       - name: Run tests
