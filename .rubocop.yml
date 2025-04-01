@@ -7,6 +7,6 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 #   Enabled: false
 
 # Exclude generator templates from RuboCop inspection
-# AllCops:
-#   Exclude:
-#     - 'lib/generators/**/*.rb'
+AllCops:
+  Exclude:
+    - "lib/generators/**/*.rb"
