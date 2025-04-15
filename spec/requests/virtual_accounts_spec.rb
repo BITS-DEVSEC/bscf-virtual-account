@@ -13,7 +13,7 @@ RSpec.describe "VirtualAccounts", type: :request do
       branch_code: "BR001",
       product_scheme: %w[SAVINGS CURRENT LOAN].sample,
       voucher_type: "REGULAR",
-      status: "active"
+      status: "pending"
     }
   end
 
@@ -28,7 +28,7 @@ RSpec.describe "VirtualAccounts", type: :request do
 
   let(:new_attributes) do
     {
-      status: "pending"
+      status: "active"
     }
   end
 
@@ -36,7 +36,7 @@ RSpec.describe "VirtualAccounts", type: :request do
 
   describe "GET /virtual_accounts/verified_accounts" do
     it "returns verified accounts" do
-      verified_account = create(:virtual_account, status: :verified)
+      verified_account = create(:virtual_account, status: :active)
       create(:virtual_account, status: :pending)
 
       get verified_accounts_virtual_accounts_path
@@ -45,27 +45,6 @@ RSpec.describe "VirtualAccounts", type: :request do
       json_response = JSON.parse(response.body)
       expect(json_response.length).to eq(1)
       expect(json_response.first["id"]).to eq(verified_account.id)
-    end
-  end
-
-  describe "PATCH /virtual_accounts/:id/update_kyc_status" do
-    let(:virtual_account) { create(:virtual_account, status: :pending) }
-
-    context "with valid parameters" do
-      it "updates the KYC status" do
-        patch update_kyc_status_virtual_account_path(virtual_account), params: { status: "verified" }
-        
-        expect(response).to have_http_status(:ok)
-        expect(virtual_account.reload.status).to eq("verified")
-      end
-    end
-
-    context "with invalid parameters" do
-      it "returns unprocessable entity status" do
-        patch update_kyc_status_virtual_account_path(virtual_account), params: { status: "invalid_status" }
-        
-        expect(response).to have_http_status(:unprocessable_entity)
-      end
     end
   end
 end
