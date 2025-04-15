@@ -2,8 +2,28 @@ class VirtualAccountsController < ApplicationController
   include Common
 
   def verified_accounts
-    @virtual_accounts = Bscf::Core::VirtualAccount.where(status: :active)
-    render json: @virtual_accounts
+    virtual_accounts = Bscf::Core::VirtualAccount.where(status: :active)
+    render json: virtual_accounts, status: :ok
+  end
+
+  def approve
+    virtual_account = Bscf::Core::VirtualAccount.find(params[:id])
+    
+    if virtual_account.pending? && virtual_account.update(status: :active)
+      render json: virtual_account, status: :ok
+    else
+      render json: { errors: virtual_account.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def suspend
+    virtual_account = Bscf::Core::VirtualAccount.find(params[:id])
+    
+    if virtual_account.pending? && virtual_account.update(status: :suspended)
+      render json: virtual_account, status: :ok
+    else
+      render json: { errors: virtual_account.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private

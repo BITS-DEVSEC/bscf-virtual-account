@@ -7,7 +7,8 @@ Rails.application.routes.draw do
       get :verified_accounts
     end
     member do
-      patch :update_kyc_status
+      put :approve
+      put :suspend
     end
   end
   
