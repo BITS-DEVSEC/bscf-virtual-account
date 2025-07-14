@@ -1,5 +1,11 @@
 class VirtualAccountsController < ApplicationController
   include Common
+  before_action :is_authenticated
+
+  def my_virtual_accounts
+    virtual_accounts = Bscf::Core::VirtualAccount.where(user_id: current_user.id)
+    render json: virtual_accounts, status: :ok
+  end
 
   def verified_accounts
     virtual_accounts = Bscf::Core::VirtualAccount.where(status: :active)
