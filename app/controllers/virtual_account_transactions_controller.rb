@@ -1,6 +1,22 @@
 class VirtualAccountTransactionsController < ApplicationController
   include Common
 
+  def create
+    result = VirtualAccountTransactionService.create_transaction(model_params.to_h)
+    
+    if result.success?
+      render json: {
+        success: true,
+        data: result.transactions
+      }, status: :created
+    else
+      render json: {
+        success: false,
+        errors: result.errors
+      }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def model_params
@@ -14,7 +30,8 @@ class VirtualAccountTransactionsController < ApplicationController
       :amount,
       :transaction_type,
       :status,
-      :description
+      :description,
+      :reference_number
     ]
   end
 end

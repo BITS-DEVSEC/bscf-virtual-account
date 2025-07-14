@@ -1,5 +1,38 @@
 class VirtualAccountsController < ApplicationController
   include Common
+  before_action :set_virtual_account, only: [:show, :update, :destroy]
+
+  def index
+    virtual_accounts = Bscf::Core::VirtualAccount.all
+    render json: { success: true, data: virtual_accounts }, status: :ok
+  end
+
+  def show
+    render json: { success: true, data: @virtual_account.as_json }, status: :ok
+  end
+
+  def create
+    virtual_account = Bscf::Core::VirtualAccount.new(model_params)
+    
+    if virtual_account.save
+      render json: { success: true, data: virtual_account }, status: :created
+    else
+      render json: { success: false, error: virtual_account.errors.full_messages.join(', ') }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @virtual_account.update(model_params)
+      render json: { success: true, data: @virtual_account }, status: :ok
+    else
+      render json: { success: false, error: @virtual_account.errors.full_messages.join(', ') }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @virtual_account.destroy
+    render json: { success: true, message: 'Virtual account deleted successfully' }, status: :ok
+  end
 
   def my_virtual_accounts
     virtual_accounts = Bscf::Core::VirtualAccount.where(user_id: current_user.id)
@@ -63,8 +96,12 @@ class VirtualAccountsController < ApplicationController
 
   private
 
+  def set_virtual_account
+    @virtual_account = Bscf::Core::VirtualAccount.find(params[:id])
+  end
+
   def model_params
-    params.require(:payload).permit(permitted_params)
+    params.require(:virtual_account).permit(permitted_params)
   end
 
   def permitted_params
@@ -73,6 +110,7 @@ class VirtualAccountsController < ApplicationController
       :account_number,
       :cbs_account_number,
       :balance,
+      :locked_amount,
       :interest_rate,
       :interest_type,
       :active,
