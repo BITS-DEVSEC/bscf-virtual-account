@@ -1,6 +1,5 @@
 class VirtualAccountsController < ApplicationController
   include Common
-  before_action :is_authenticated
 
   def my_virtual_accounts
     virtual_accounts = Bscf::Core::VirtualAccount.where(user_id: current_user.id)
@@ -10,6 +9,36 @@ class VirtualAccountsController < ApplicationController
   def verified_accounts
     virtual_accounts = Bscf::Core::VirtualAccount.where(status: :active)
     render json: virtual_accounts, status: :ok
+  end
+
+  def lookup_by_account_number
+    unless params[:account_number].present?
+      render json: { error: "Account number is required" }, status: :bad_request
+      return
+    end
+
+    virtual_account = Bscf::Core::VirtualAccount.includes(:user)
+                                                .find_by(account_number: params[:account_number])
+    
+    if virtual_account
+      user = virtual_account.user
+      account_holder_name = "#{user.first_name} #{user.middle_name} #{user.last_name}".strip
+      
+      render json: {
+        success: true,
+        data: {
+          account_id: virtual_account.id,
+          account_number: virtual_account.account_number,
+          account_holder_name: account_holder_name,
+          user_id: user.id
+        }
+      }, status: :ok
+    else
+      render json: { 
+        success: false, 
+        error: "Virtual account not found" 
+      }, status: :not_found
+    end
   end
 
   def approve

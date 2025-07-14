@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :virtual_accounts do
     collection do
       get :verified_accounts
+      get :my_virtual_accounts
+      get :lookup_by_account_number
     end
     member do
       put :approve
