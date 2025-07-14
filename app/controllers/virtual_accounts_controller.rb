@@ -101,7 +101,7 @@ class VirtualAccountsController < ApplicationController
   end
 
   def model_params
-    params.require(:virtual_account).permit(permitted_params)
+    params.require(:payload).permit(permitted_params)
   end
 
   def permitted_params
