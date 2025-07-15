@@ -1,6 +1,22 @@
 class VirtualAccountTransactionsController < ApplicationController
   include Common
 
+  def index
+    transactions = Bscf::Core::VirtualAccountTransaction.all
+    render json: { success: true, data: transactions }, status: :ok
+  end
+
+  def my_transactions
+    user_account_ids = Bscf::Core::VirtualAccount.where(user_id: current_user.id).pluck(:id)
+    
+    transactions = Bscf::Core::VirtualAccountTransaction
+                    .where(account_id: user_account_ids)
+                    .includes(:account)
+                    .order(created_at: :desc)
+    
+    render json: { success: true, data: transactions }, status: :ok
+  end
+
   def create
     result = VirtualAccountTransactionService.create_transaction(model_params.to_h)
     
