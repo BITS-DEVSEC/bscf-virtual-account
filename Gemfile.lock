@@ -89,7 +89,7 @@ GEM
     bigdecimal (3.2.2)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
-    brakeman (7.0.0)
+    brakeman (7.1.0)
       racc
     bscf-core (0.4.94)
       active_model_serializers
